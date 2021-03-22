@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:adding_state/models/names.dart';
 
-import 'models/names.dart';
+import 'controllers/giving_ouputs.dart';
+import 'controllers/taking_inputs.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,30 +17,40 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({Key key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: NamesChange(),
+    );
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+/// we need a stateful widget because we want to change state
+/// of our properties and want our UI should reflect that
+/// new state ofthe changed-properties
+///
+class NamesChange extends StatefulWidget {
+  @override
+  _NamesChangeState createState() => _NamesChangeState();
+}
+
+class _NamesChangeState extends State<NamesChange> {
+  /// since we have kept everything in a single stateful widget
+  /// each event that happens on the model class, rebuilds the whole widget tree
+  /// as a result, a section of the wiget that should not belong to this
+  /// wiidget tree, is affected. To solve this problem, we can take those parts
+  /// to stateless widgets, however we should pass the needful reference methods
+  /// through constructors of required classes
+  ///
+
   final List<Names> names = [
     Names(
       firstName: 'Sanjib',
@@ -54,51 +66,23 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
   ];
 
+  /// we want to add names to the list dynamically so we want a method
+  /// and setState method to add to the list
+  ///
+  void addNamesToList(String first, String last) {
+    final addingNames = Names(firstName: first, lastName: last);
+    setState(() {
+      names.add(addingNames);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Column(
-        // Column is also a layout widget. It takes a list of children and
-        // arranges them vertically. By default, it sizes itself to fit its
-        // children horizontally, and tries to be as tall as its parent.
-        //
-        // Invoke "debug painting" (press "p" in the console, choose the
-        // "Toggle Debug Paint" action from the Flutter Inspector in Android
-        // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-        // to see the wireframe for each widget.
-        //
-        // Column has various properties to control how it sizes itself and
-        // how it positions its children. Here we use mainAxisAlignment to
-        // center the children vertically; the main axis here is the vertical
-        // axis because Columns are vertical (the cross axis would be
-        // horizontal).
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: names.map((name) {
-          return Column(
-            children: [
-              Text(
-                name.firstName,
-                style: Theme.of(context).textTheme.headline5,
-              ),
-              Text(
-                name.lastName,
-                style: Theme.of(context).textTheme.headline5,
-              ),
-            ],
-          );
-        }).toList(),
-      ),
+    return ListView(
+      children: [
+        TakingInputs(addNames: addNamesToList),
+        GivingOutputs(names),
+      ],
     );
   }
 }
