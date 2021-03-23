@@ -59,16 +59,22 @@ class _NamesChangeState extends State<NamesChange> {
 
   final List<Names> names = [
     Names(
+      id: DateTime.now().microsecond.toString(),
       firstName: 'Sanjib',
       lastName: 'Sinha',
+      date: DateTime.now(),
     ),
     Names(
+      id: DateTime.now().microsecond.toString(),
       firstName: 'Json',
       lastName: 'Web',
+      date: DateTime.now(),
     ),
     Names(
+      id: DateTime.now().microsecond.toString(),
       firstName: 'John',
       lastName: 'Smith',
+      date: DateTime.now(),
     ),
   ];
 
@@ -76,7 +82,12 @@ class _NamesChangeState extends State<NamesChange> {
   /// and setState method to add to the list
   ///
   void addNamesToList(String first, String last) {
-    final addingNames = Names(firstName: first, lastName: last);
+    final addingNames = Names(
+      id: DateTime.now().microsecond.toString(),
+      firstName: first,
+      lastName: last,
+      date: DateTime.now(),
+    );
     setState(() {
       names.add(addingNames);
     });

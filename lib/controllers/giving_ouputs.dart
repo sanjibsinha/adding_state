@@ -13,17 +13,38 @@ class GivingOutputs extends StatelessWidget {
     return Container(
       child: Column(
         children: names.map((name) {
-          return Column(
-            children: [
-              Text(
-                name.firstName,
-                style: Theme.of(context).textTheme.headline3,
+          return Container(
+            width: 300,
+            height: 250,
+            margin: EdgeInsets.all(10),
+            padding: EdgeInsets.all(10),
+            child: Card(
+              elevation: 10,
+              margin: EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Text(
+                    name.id,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  Text(
+                    name.firstName,
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                  Text(
+                    name.lastName,
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                    name.date.day.toString(),
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                ],
               ),
-              Text(
-                name.lastName,
-                style: Theme.of(context).textTheme.headline4,
-              ),
-            ],
+            ),
           );
         }).toList(),
       ),
